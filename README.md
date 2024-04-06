@@ -12,3 +12,5 @@
 8. Again run docker-compose up --build
 9. Go to localhost:5000 in your browser. You should now be able to access the website.
 10. Click on the Health Check option. It will show a message, "Health Check Message Sent"
+
+### Database is not getting stored for now. This is just for checking the connection with rabbitMQ. We need to make lot of changes ;)
