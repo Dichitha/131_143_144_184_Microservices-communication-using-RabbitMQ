@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>StockSprint</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <style>
+    body {
+      background-color: #f0f0f0; /* Light Grey */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .container {
+      margin-top: 50px;
+    }
+    .btn-primary {
+      background-color: #3498db; /* Blue */
+      border-color: #3498db;
+      color: #fff; /* White text */
+      margin-bottom: 15px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+      background-color: #2980b9; /* Darker Blue */
+      border-color: #2980b9;
+    }
+    .btn-primary:before {
+      content: '';
+      position: absolute;
+      width: 150%;
+      height: 150%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 10%, transparent 70%);
+      top: -25%;
+      left: -25%;
+      animation: twinkling 1s linear infinite;
+      pointer-events: none;
+      opacity: 0;
+    }
+    .btn-primary:hover:before {
+      opacity: 1;
+    }
+    @keyframes twinkling {
+      0% { transform: scale(0); }
+      50% { transform: scale(1); }
+      100% { transform: scale(0); }
+    }
+    .btn-primary:focus {
+      box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.5); /* Focus color */
+    }
+    .btn-primary:active {
+      background-color: #1f618d; /* Slightly darker when clicked */
+      border-color: #1f618d;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #333
+    }
+    .btn-lg {
+      font-size: 1.5rem;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to StockSprint</h1>
+    <div class="row">
+      <div class="col-md-6">
+        <a href="health_check" class="btn btn-primary btn-lg">Health Check</a>
+        <a href="read_database" class="btn btn-primary btn-lg">Manage Stocks</a>
+      </div>
+      <div class="col-md-6">
+        <a href="insert_record" class="btn btn-primary btn-lg">Create Item</a>
+        <a href="delete_record" class="btn btn-primary btn-lg">Process Order</a>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNVQ8ew" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
