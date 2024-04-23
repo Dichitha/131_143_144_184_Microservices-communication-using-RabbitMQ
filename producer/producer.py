@@ -71,8 +71,15 @@ def stock_update():
         'item_id': int(request.form["item_id"]), 
         'quantity': int(request.form["quantity"])
     }
-    channel.basic_publish(exchange='', routing_key='stock_management_queue', body=str(data))
-    return redirect(url_for('getitems'))
+    q1="select id from items"
+    cursor.execute(q1)
+    x=cursor.fetchall()
+    print(x)
+    if int(request.form["item_id"]) not in [item[0] for item in x]:
+        return 'Item does not exist!!'
+    else:
+        channel.basic_publish(exchange='', routing_key='stock_management_queue', body=str(data))
+        return redirect(url_for('getitems'))
 
 @app.route('/orders', methods=['POST'])
 def order_process():
@@ -83,7 +90,14 @@ def order_process():
         'shipping_address': request.form["shipping_address"]
     }
     channel.basic_publish(exchange='', routing_key='order_processing_queue', body=str(data))
-    return 'Order request sent'
+    q1="select id from items"
+    cursor.execute(q1)
+    y=cursor.fetchall()
+    print(y)
+    if int(request.form["item_id"]) not in [item[0] for item in y]:
+        return 'Item does not exist!!'
+    else:
+        return 'Order request sent'
     
 if __name__=='__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
