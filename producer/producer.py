@@ -74,7 +74,8 @@ def stock_update():
     q1="select id from items"
     cursor.execute(q1)
     x=cursor.fetchall()
-    if int(request.form["item_id"]) not in x:
+    print(x)
+    if int(request.form["item_id"]) not in [item[0] for item in x]:
         return 'Item does not exist!!'
     else:
         channel.basic_publish(exchange='', routing_key='stock_management_queue', body=str(data))
@@ -91,8 +92,9 @@ def order_process():
     channel.basic_publish(exchange='', routing_key='order_processing_queue', body=str(data))
     q1="select id from items"
     cursor.execute(q1)
-    x=cursor.fetchall()
-    if request.form["item_id"] not in x:
+    y=cursor.fetchall()
+    print(y)
+    if int(request.form["item_id"]) not in [item[0] for item in y]:
         return 'Item does not exist!!'
     else:
         return 'Order request sent'
