@@ -1,95 +1,52 @@
-version: "3.8"
-
-volumes:
-  mongodata:
-
-networks:
-  prodcon_network:
-    driver: bridge
-
+version: '3.8'
 services:
-  rabbitmq:
-    image: rabbitmq:3-management
-    hostname: rabbitmq
-    ports:
-      - "15672:15672" # For RabbitMQ management interface
-      - "5672:5672"   # For RabbitMQ message broker
-    healthcheck:
-      test: rabbitmq-diagnostics check_port_connectivity
-      interval: 30s
-      timeout: 30s
-      retries: 3
-    networks:
-      - prodcon_network
-
-  mongodb:
-    image: mongo
-    ports:
-      - "27017:27017"
-    restart: always
-    logging:
-      driver: none
-    volumes:
-      - mongodata:/data/db
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
-    networks:
-      - prodcon_network
-
   producer:
-    build: Producer/
-    ports:
-      - "5000:5000" # For Flask server
+    build: ./producer
     depends_on:
-      rabbitmq:
-        condition: service_healthy
+      - rabbitmq
     environment:
       - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=guest
-      - RABBITMQ_PASSWORD=guest
-    networks:
-      - prodcon_network
-
-  consumer_health_check:
-    build: Consumer_one/
+    ports:
+      - "5000:5000"
+  
+  consumer_1:
+    build: ./consumer_1
     depends_on:
-      producer:
-        condition: service_started
-    networks:
-      - prodcon_network
-
-  consumer_insert_record:
-    build: Consumer_two/
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
+      - rabbitmq
     environment:
-      - MONGODB_URI=mongodb://mongodb:27017/rabbitmq-microservice
-    networks:
-      - prodcon_network
-
-  consumer_delete_record:
-    build: Consumer_three/
+      - RABBITMQ_HOST=rabbitmq
+    ports:
+      - "5001:5000"
+  
+  consumer_2:
+    build: ./consumer_2
     depends_on:
-      rabbitmq:
-        condition: service_healthy
+      - rabbitmq
     environment:
-      - MONGODB_URI=mongodb://mongodb:27017/rabbitmq-microservice
-    networks:
-      - prodcon_network
+      - RABBITMQ_HOST=rabbitmq
+    ports:
+      - "5002:5000"
 
-  consumer_read_database:
-    build: Consumer_four/
-    command: python3 read_database.py
+  consumer_3:
+    build: ./consumer_3
     depends_on:
-      rabbitmq:
-        condition: service_healthy
+      - rabbitmq
     environment:
-      - MONGODB_URI=mongodb://localhost:27017/rabbitmq-microservice
-    networks:
-      - prodcon_network
+      - RABBITMQ_HOST=rabbitmq
+    ports:
+      - "5003:5000"
+
+  consumer_4:
+    build: ./consumer_4
+    depends_on:
+      - rabbitmq
+    environment:
+      - RABBITMQ_HOST=rabbitmq
+    ports:
+      - "5004:5000"
+      
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
